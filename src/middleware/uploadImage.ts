@@ -2,7 +2,7 @@ import multer, { Multer } from "multer";
 import { v4 as uuidv4 } from "uuid";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/images');
+    cb(null, './public/Images');
   },
   filename: (req, file, cb) => {
     const originalFilename = file.originalname.split('.')[0];
