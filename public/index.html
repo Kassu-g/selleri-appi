@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offer</title>
+</head>
+<body>
+  <h1>Offer</h1>
+  <form id="offerForm" action="/upload" method="POST" enctype="multipart/form-data">
+    <div>
+      <label for="otsikko">Title:</label>
+      <input type="text" id="otsikko" name="otsikko" required />
+    </div>
+    <div>
+      <label for="hinta">Price:</label>
+      <input type="number" id="hinta" name="hinta" required />
+    </div>
+    <div>
+      <label for="kuvaus">Description:</label>
+      <textarea id="kuvaus" name="kuvaus" required></textarea>
+    </div>
+    <div>
+      <label for="image">Image:</label>
+      <input type="file" id="image" name="image" />
+    </div>
+    <button type="submit">Submit Offer</button>
+  </form>
+</body>
+</html>
