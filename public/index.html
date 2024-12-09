@@ -4,32 +4,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Offer</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 50%;
+      margin: auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>My offer</h1>
     <form id="offerForm" action="/upload" method="POST" enctype="multipart/form-data">
       <div class="form-group">
-        <label for="title">title:</label>
+        <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
       </div>
       <div class="form-group">
-        <label for="description">description:</label>
+        <label for="description">Description:</label>
         <textarea id="description" name="description" required></textarea>
       </div>
       <div class="form-group">
-        <label for="price">price:</label>
+        <label for="price">Price:</label>
         <input type="number" id="price" name="price" required>
       </div>
       <div class="form-group">
-        <label for="image">upload Image:</label>
+        <label for="image">Upload Image:</label>
         <input type="file" id="image" name="image">
       </div>
       <div class="form-group">
-        <button type="submit">submit Offer</button>
+        <button type="submit">Submit Offer</button>
       </div>
     </form>
   </div>
-  
 </body>
 </html>
