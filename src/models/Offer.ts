@@ -1,16 +1,19 @@
-import { Schema, model, Document } from "mongoose";
+import { Document, Schema, model } from 'mongoose';
 
-export interface IOffer extends Document {
+interface IOffer extends Document {
   title: string;
   description: string;
   price: number;
-  imageId?: string;
+  imageId: Schema.Types.ObjectId;
 }
 
-const OfferSchema = new Schema<IOffer>({
+const offerSchema = new Schema<IOffer>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  imageId: { type: String, required: false },
+  imageId: { type: Schema.Types.ObjectId, ref: 'Image' }
 });
-export const Offer = model<IOffer>("Offer", OfferSchema);
+
+const Offer = model<IOffer>('Offer', offerSchema);
+
+export { Offer };

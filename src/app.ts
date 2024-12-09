@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import upload from "./middleware/uploadImage";
-import mongoose from "mongoose";
+import mongoose, { NullExpression } from "mongoose";
 import { Offer } from "./models/Offer";
 import { Image } from "./models/Image";
 
@@ -51,7 +51,26 @@ api.post("/upload", upload.single("image"), async (req: Request, res: Response) 
     return res.status(500).send("Server error: " + err.message);
   }
 });
+api.get('/offers', async (req: Request, res: Response) => {
+    try {
+      const offers = await Offer.find().populate('imageId');
+  
+      const offerData = offers.map(offer => {
+        return {
+          title: offer.title,
+          description: offer.description,
+          price: offer.price,
+          imagePath: offer.imageId ? offer.imageId.path : null
+        };
+      });
+  
+      return res.json(offerData);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send('Server error');
+    }
+  });
 
 api.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Running on http://localhost:${PORT}`);
 });

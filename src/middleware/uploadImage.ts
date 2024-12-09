@@ -8,6 +8,7 @@ const storage = multer.diskStorage({
     const originalFilename = file.originalname.split('.')[0];
     const fileExtension = file.originalname.split('.').pop();
     const uniqueId = uuidv4();
+
     const newFilename = `${originalFilename}_${uniqueId}.${fileExtension}`;
     cb(null, newFilename);
   }

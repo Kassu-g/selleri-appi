@@ -57,6 +57,24 @@ api.post("/upload", uploadImage_1.default.single("image"), (req, res) => __await
         return res.status(500).send("Server error: " + err.message);
     }
 }));
+api.get('/offers', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const offers = yield Offer_1.Offer.find().populate('imageId');
+        const offerData = offers.map(offer => {
+            return {
+                title: offer.title,
+                description: offer.description,
+                price: offer.price,
+                imagePath: offer.imageId ? offer.imageId.path : null
+            };
+        });
+        return res.json(offerData);
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).send('Server error');
+    }
+}));
 api.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Running on http://localhost:${PORT}`);
 });
