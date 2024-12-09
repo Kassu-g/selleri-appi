@@ -13,40 +13,50 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const uploadImage_1 = __importDefault(require("./middleware/uploadImage"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const multer_1 = __importDefault(require("multer"));
 const Offer_1 = require("./models/Offer");
-const api = (0, express_1.default)();
+const Image_1 = require("./models/Image");
+const app = (0, express_1.default)();
 const PORT = 3000;
-api.use(body_parser_1.default.urlencoded({ extended: true }));
-api.use(body_parser_1.default.json());
-api.use(express_1.default.static("public"));
-const storage = multer_1.default.memoryStorage();
-const upload = (0, multer_1.default)({ storage });
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_1.default.static("public"));
 mongoose_1.default
     .connect("mongodb://127.0.0.1:27017/testdb")
-    .then(() => console.log("Konnektaa "))
-    .catch((err) => console.error("taas error:", err));
-api.post("/upload", upload.single("image"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    .then(() => console.log("Connected to MongoDB"))
+    .catch((err) => console.error("MongoDB connection error:", err));
+app.post("/upload", uploadImage_1.default.single("image"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, description, price } = req.body;
+        const image = req.file; // The uploaded file
         if (!title || !description || typeof price === "undefined") {
             return res.status(400).send("All fields are required.");
+        }
+        let imageId = "";
+        if (image) {
+            const imageFilename = image.filename;
+            const imagePath = `public/images/${imageFilename}`;
+            const newImage = new Image_1.Image({
+                filename: imageFilename,
+                path: imagePath
+            });
+            yield newImage.save();
+            imageId = newImage._id.toString();
         }
         const newOffer = new Offer_1.Offer({
             title,
             description,
             price,
+            imageId
         });
         yield newOffer.save();
-        return res.status(201).send("Success.");
+        return res.status(201).send("Offer uploaded successfully");
     }
     catch (err) {
-        console.error(err);
-        return res.status(500).send("Error while saving");
+        return res.status(500).send("Server error: " + err.message);
     }
 }));
-api.listen(PORT, () => {
-    console.log(`Täällä toimii http://localhost:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
