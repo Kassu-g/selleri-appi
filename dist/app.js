@@ -17,19 +17,19 @@ const uploadImage_1 = __importDefault(require("./middleware/uploadImage"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Offer_1 = require("./models/Offer");
 const Image_1 = require("./models/Image");
-const app = (0, express_1.default)();
+const api = (0, express_1.default)();
 const PORT = 3000;
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use(express_1.default.static("public"));
+api.use(express_1.default.json());
+api.use(express_1.default.urlencoded({ extended: true }));
+api.use(express_1.default.static("public"));
 mongoose_1.default
     .connect("mongodb://127.0.0.1:27017/testdb")
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.error("MongoDB connection error:", err));
-app.post("/upload", uploadImage_1.default.single("image"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    .then(() => console.log("Connection"))
+    .catch((err) => console.error("Error:", err));
+api.post("/upload", uploadImage_1.default.single("image"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, description, price } = req.body;
-        const image = req.file; // The uploaded file
+        const image = req.file;
         if (!title || !description || typeof price === "undefined") {
             return res.status(400).send("All fields are required.");
         }
@@ -57,6 +57,6 @@ app.post("/upload", uploadImage_1.default.single("image"), (req, res) => __await
         return res.status(500).send("Server error: " + err.message);
     }
 }));
-app.listen(PORT, () => {
+api.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
